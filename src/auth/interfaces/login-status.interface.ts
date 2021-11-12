@@ -1,5 +1,6 @@
+import { AccessTokenData } from "./accessTokenData.interface";
+
 export interface LoginStatus {
     email: string;
-    accessToken: any;
-    expiresIn: any;
+    token: AccessTokenData,
 }
