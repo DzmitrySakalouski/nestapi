@@ -13,12 +13,8 @@ export class AuthController {
         let result: RegistrationStatus;
         try {
             result = await this.authService.register(createUserDto);
-            console.log(
-                'AuthController',
-                result
-            )
         } catch (error) {
-            console.log(error);
+            throw new HttpException(result.message, HttpStatus.BAD_REQUEST);
         }
         
         if (!result.success) {

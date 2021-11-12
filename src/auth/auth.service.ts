@@ -17,11 +17,10 @@ export class AuthService {
     async register(userDto: CreateUserDto): Promise<RegistrationStatus> {
         let status: RegistrationStatus;
 
-        console.log('Register Service: ', userDto)
         try {
             const user = await this.userService.createUser(userDto);
             const token = this.createToken(user);
-            console.log('Token Service: ', token)
+
             status = {
                 success: true,
                 message: 'User registered',
@@ -42,6 +41,9 @@ export class AuthService {
         const user = await this.userService.findUserByLogin(loginUserDto);
         const token = this.createToken(user);
 
+        const userr = this.jwtService.decode(token.accessToken);
+        console.log('userr', userr);
+
         return {
             email: user.email, token,
         }
@@ -59,6 +61,7 @@ export class AuthService {
     private createToken({email}: UserDto): AccessTokenData {
         const user: JwtPayload = { email };
         const accessToken = this.jwtService.sign(user);
+        
         return {
             expiresIn: '300s',
             accessToken,
