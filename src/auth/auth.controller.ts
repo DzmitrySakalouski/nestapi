@@ -10,10 +10,13 @@ export class AuthController {
 
     @Post('register')
     public async register(@Body() createUserDto: CreateUserDto): Promise<RegistrationStatus> {
-        console.log('AuthController', createUserDto);
         let result: RegistrationStatus;
         try {
             result = await this.authService.register(createUserDto);
+            console.log(
+                'AuthController',
+                result
+            )
         } catch (error) {
             console.log(error);
         }
