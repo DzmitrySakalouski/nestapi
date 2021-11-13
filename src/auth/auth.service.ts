@@ -45,7 +45,7 @@ export class AuthService {
         console.log('userr', userr);
 
         return {
-            email: user.email, token,
+            token,
         }
     }
 

@@ -14,7 +14,7 @@ export class AuthController {
         try {
             result = await this.authService.register(createUserDto);
         } catch (error) {
-            throw new HttpException(result.message, HttpStatus.BAD_REQUEST);
+            throw new HttpException("Cannot find user", HttpStatus.BAD_REQUEST);
         }
         
         if (!result.success) {
