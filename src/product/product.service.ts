@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './model/product.dto';
 import { ProductStatus } from './model/product.interface';
@@ -6,7 +7,7 @@ import { Product } from './model/product.model';
 
 @Injectable()
 export class ProductService {
-    constructor(private readonly productRepository: Repository<Product>) {}
+    constructor(@InjectRepository(Product) private readonly productRepository: Repository<Product>) {}
 
     async getProductByGroupId(groupId: number): Promise<Product[]> {
         return await this.productRepository.find({where: {groupId}});

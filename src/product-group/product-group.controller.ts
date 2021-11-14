@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { CreateProductGroupDto } from './model/product-group.dto';
 import { ProductGroupStatus } from './model/product-group.interface';
 import { ProductGroup } from './model/product-group.model';
@@ -21,16 +21,8 @@ export class ProductGroupController {
     }
 
     @Post()
-    async createGroup(productGroupDto: CreateProductGroupDto): Promise<ProductGroupStatus> {
-        let result: ProductGroupStatus;
-
-        try {
-            result = await this.productGroupService.createProductGroup(productGroupDto);
-        } catch (error) {
-            throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-        }
-
-        return result;
+    async createGroup(@Body() productGroupDto: CreateProductGroupDto): Promise<ProductGroup> {
+        return await this.productGroupService.createProductGroup(productGroupDto);
     }
 
     @Delete(':id')

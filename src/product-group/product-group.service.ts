@@ -13,21 +13,19 @@ export class ProductGroupService {
         return this.productGroupRepository.find();
     }
 
-    async createProductGroup(productGroupDto: CreateProductGroupDto): Promise<ProductGroupStatus> {
+    async createProductGroup(productGroupDto: CreateProductGroupDto): Promise<ProductGroup> {
         const {name, description, imageUrl} = productGroupDto;
-        let status: ProductGroupStatus;
+        
         const groupInDb = await this.productGroupRepository.findOne({where: {name}});
 
         if (groupInDb) {
-            status.success = false;
-            return status
-        } else {
-            const productGroup: ProductGroup = await this.productGroupRepository.create({name, description, imageUrl});
-            await this.productGroupRepository.save(productGroup);
-            status.success = true;
+            throw new HttpException("Product already exists.", HttpStatus.BAD_REQUEST);
         }
+            
+        const productGroup: ProductGroup = await this.productGroupRepository.create({name, description, imageUrl});
+        await this.productGroupRepository.save(productGroup);
 
-        return status;
+        return productGroup
     }
 
     async removeProductGroup(id: number): Promise<ProductGroup[]> {
