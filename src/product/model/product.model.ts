@@ -1,5 +1,5 @@
 import { ProductGroup } from "src/product-group/model/product-group.model";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Product {
@@ -12,7 +12,9 @@ export class Product {
     @Column()
     description: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     rate: number;
 
     @Column()
@@ -21,7 +23,7 @@ export class Product {
     @Column()
     imageUrl: string;
 
-    @ManyToOne(type => ProductGroup)
-    @JoinColumn({name: 'groupId', referencedColumnName: 'id'})
+    @ManyToOne(type => ProductGroup, group => group.id)
+    @JoinColumn({name: "groupId"})
     groupId: number;    
 }

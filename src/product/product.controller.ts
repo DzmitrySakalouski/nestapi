@@ -1,6 +1,5 @@
-import { Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { CreateProductDto } from './model/product.dto';
-import { ProductStatus } from './model/product.interface';
 import { Product } from './model/product.model';
 import { ProductService } from './product.service';
 
@@ -13,12 +12,16 @@ export class ProductController {
         return this.productService.getProductDetails(+id);
     }
 
-    @Get(':groupId') 
-    async getProductsByGroupId(@Param('groupId') groupId: string): Promise<Product[]> {
+    @Get('group/:id') 
+    async getProductsByGroupId(@Param('id') groupId: number): Promise<Product[]> {
         let products: Product[];
+        console.log(groupId, groupId, groupId);
+        
         try {
-            products = await this.productService.getProductByGroupId(+groupId);
+            products = await this.productService.getProductByGroupId(groupId);
         } catch (error) {
+            console.log(error);
+            
             throw new HttpException("Cannot get products for specified group", HttpStatus.BAD_REQUEST);
         }
 
@@ -26,16 +29,14 @@ export class ProductController {
     }
 
     @Post()
-    async createProduct(productsDto: CreateProductDto): Promise<ProductStatus> {
-        let result: ProductStatus;
+    async createProduct(@Body() productsDto: CreateProductDto): Promise<Product> {
+        console.log("prod", productsDto);
 
-        try {
-            result = await this.productService.createProduct(productsDto);
-        } catch (error) {
-            throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+        if (productsDto && !productsDto.name) {
+            throw new HttpException("Something wrong with product data", HttpStatus.BAD_REQUEST)
         }
-
-        return result;
+        
+        return await this.productService.createProduct(productsDto);
     }
 
     @Delete(':id')

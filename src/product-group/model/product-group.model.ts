@@ -1,5 +1,5 @@
 import { Product } from "src/product/model/product.model";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class ProductGroup {
@@ -15,6 +15,6 @@ export class ProductGroup {
     @Column()
     imageUrl: string;
 
-    @OneToMany(type => Product, product => product.groupId)
+    @OneToMany(type => Product, product => product.id)
     products: Product[];
 }

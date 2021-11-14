@@ -20,19 +20,15 @@ export class ProductService {
     async createProduct(productDto: CreateProductDto) {
         const { name, description, price, imageUrl, groupId } = productDto;
 
-        let status: ProductStatus;
-
         const productInDb = await this.productRepository.findOne({where: {name}});
 
         if (productInDb) {
-            status.success = false;
-            return status;
+            throw new HttpException("Product already exists", HttpStatus.BAD_REQUEST);
         }
 
         const product = await this.productRepository.create({name, description, price, imageUrl, groupId});
         await this.productRepository.save(product);
-        status.success = true;
-        return status;
+        return product;
     }
 
     async removeProduct(id: number): Promise<Product[]> {
