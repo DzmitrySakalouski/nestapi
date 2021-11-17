@@ -8,7 +8,7 @@ export class UsersController {
 
     @UseGuards(JwtAuthGuard)
     @Get('me')
-    public getUserData(@Request() request) {
+    public getUserData(@Request() request) {        
         return request.user;
     }
 }

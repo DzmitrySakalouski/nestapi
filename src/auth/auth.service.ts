@@ -63,7 +63,7 @@ export class AuthService {
         const accessToken = this.jwtService.sign(user);
         
         return {
-            expiresIn: '300s',
+            expiresIn: '3600s',
             accessToken,
         }
     }

@@ -1,4 +1,5 @@
-import { Controller, Post, UseGuards, Request, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, UseGuards, Request, Body, HttpException, HttpStatus, Get } from '@nestjs/common';
+import { request } from 'express';
 import { CreateUserDto, LoginUserDto } from 'src/users/model/user.dto';
 import { AuthService } from './auth.service';
 import { LoginStatus } from './interfaces/login-status.interface';
@@ -27,5 +28,10 @@ export class AuthController {
     @Post('login')
     public async login(@Body() loginUserDto: LoginUserDto): Promise<LoginStatus> {
         return await this.authService.login(loginUserDto);
+    }
+
+    @Get('logout')
+    public async logout(@Request() request) {
+        return request.logout();
     }
 }
