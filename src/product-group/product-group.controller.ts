@@ -22,6 +22,8 @@ export class ProductGroupController {
 
     @Post()
     async createGroup(@Body() productGroupDto: CreateProductGroupDto): Promise<ProductGroup> {
+        console.log(productGroupDto);
+        
         return await this.productGroupService.createProductGroup(productGroupDto);
     }
 
